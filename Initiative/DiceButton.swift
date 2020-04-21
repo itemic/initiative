@@ -18,10 +18,10 @@ struct DiceButtonView: View {
             Text("d\(diceValue)")
                 .fontWeight(.light)
                 
-                .font(.title)
+                .font(.body)
                 
         }
-        .frame(minWidth: 100, minHeight: 100)
+        .frame(minWidth: 60, minHeight: 60)
         .foregroundColor(.white)
         .background(color)
         .cornerRadius(45)
@@ -34,6 +34,6 @@ struct DiceButtonView: View {
 
 struct DiceButtonView_Previews: PreviewProvider {
     static var previews: some View {
-        DiceButtonView(diceValue: 20)
+        DiceButtonView(diceValue: 100)
     }
 }
