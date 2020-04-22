@@ -14,6 +14,8 @@
 		4588EB2F244F26D700B853A8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4588EB2E244F26D700B853A8 /* Preview Assets.xcassets */; };
 		4588EB32244F26D700B853A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4588EB30244F26D700B853A8 /* LaunchScreen.storyboard */; };
 		4588EB3A244F26F900B853A8 /* DiceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4588EB39244F26F900B853A8 /* DiceButton.swift */; };
+		45BA329D24501CDA00DEF150 /* DiceShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA329C24501CDA00DEF150 /* DiceShape.swift */; };
+		45BA329F2450710400DEF150 /* StatsSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BA329E2450710400DEF150 /* StatsSheetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		4588EB31244F26D700B853A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4588EB33244F26D700B853A8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4588EB39244F26F900B853A8 /* DiceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceButton.swift; sourceTree = "<group>"; };
+		45BA329C24501CDA00DEF150 /* DiceShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiceShape.swift; sourceTree = "<group>"; };
+		45BA329E2450710400DEF150 /* StatsSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +70,8 @@
 				4588EB33244F26D700B853A8 /* Info.plist */,
 				4588EB2D244F26D700B853A8 /* Preview Content */,
 				4588EB39244F26F900B853A8 /* DiceButton.swift */,
+				45BA329C24501CDA00DEF150 /* DiceShape.swift */,
+				45BA329E2450710400DEF150 /* StatsSheetView.swift */,
 			);
 			path = Initiative;
 			sourceTree = "<group>";
@@ -153,6 +159,8 @@
 				4588EB26244F26D600B853A8 /* AppDelegate.swift in Sources */,
 				4588EB28244F26D600B853A8 /* SceneDelegate.swift in Sources */,
 				4588EB2A244F26D600B853A8 /* ContentView.swift in Sources */,
+				45BA329F2450710400DEF150 /* StatsSheetView.swift in Sources */,
+				45BA329D24501CDA00DEF150 /* DiceShape.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

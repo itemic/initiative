@@ -11,7 +11,7 @@ import SwiftUI
 
 struct DiceButtonView: View {
     var diceValue: Int // dice value
-    var color: Color = .blue
+    var color: Color = .gray
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             
@@ -21,7 +21,7 @@ struct DiceButtonView: View {
                 .font(.body)
                 
         }
-        .frame(minWidth: 60, minHeight: 60)
+        .frame(minWidth: 40, minHeight: 40)
         .foregroundColor(.white)
         .background(color)
         .cornerRadius(45)

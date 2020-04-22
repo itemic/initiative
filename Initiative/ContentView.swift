@@ -9,14 +9,18 @@
 import SwiftUI
 
 struct ContentView: View {
-
+    
     
     @State private var diceMap: [Int:Int] = [:]
-    @State private var selectedDice: [Int] = []
     @State private var rollResult: Int = 0
     @State private var indivResults: String = ""
+    @State private var stepperValue = "1"
+    @State private var showingSheet = false
+    @State private var disableRoll = true
     
     let defaultDice = [4, 6, 8, 10, 12, 20]
+    
+    //    let defaultDice = [4, 6, 8]
     
     @ObservedObject var diceList = SelectedDice()
     
@@ -28,79 +32,206 @@ struct ContentView: View {
         var components = [String]()
         for key in diceMap.keys.sorted(by: <) {
             if let value = diceMap[key] {
-//                components.append("\(key)/\(value)")
+                //                components.append("\(key)/\(value)")
                 if value > 1 {
                     components.append("\(value)d\(key)")
                 } else if value == 1 {
-                   components.append("d\(key)")
+                    components.append("d\(key)")
                 }
             }
         }
         
         print("a")
         return components.joined(separator: " + ")
-//        return diceMap.values
+        //        return diceMap.values
     }
     
     
     var body: some View {
-        VStack(spacing: 10) {
-            Text("Add die to roll").fontWeight(.bold).font(.largeTitle)
+        
+        
+        ZStack {
+            Color.offWhite.edgesIgnoringSafeArea(.all)
             
-            HStack {
-                
-                ForEach(defaultDice, id: \.self) {value in
-                    Button(action: {
-                        // action goes here
-                        self.addDie(value: value)
-                    }) {
-                        // design goes here
-                        DiceButtonView(diceValue: value)
-                            
-                    }
-                }
-                
-                
-                
-            }
             
-            Text("\(rollStatement.isEmpty ? "" : rollStatement)")
-//            Spacer()
-         
-            ScrollView(.horizontal) {
-                HStack(spacing: 10) {
-
-                    ForEach(diceList.selectedDice, id: \.id) {die in
+            VStack(spacing: 40) {
+                Text("Dice Roll").font(.system(.largeTitle, design: .serif)).fontWeight(.heavy)
+                
+                VStack(spacing: 10) {
+                    Text("Preset Dice").font(.system(.body, design: .serif)).fontWeight(.semibold).foregroundColor(.offWhiteDarker)
+                    HStack(spacing:10) {
+                        Button(action: {
+                            self.addDie(value: 4)
+                        }) {
+                            HStack {
+                                Image(systemName: "4.square").imageScale(.large)
+                                Spacer()
+                                Text("Add d4")
+                            }
+                        }.buttonStyle(DiceButtonStyle())
                         
                         Button(action: {
-                            self.deleteDie(die: die)
-//
+                            self.addDie(value: 6)
                         }) {
-                            // design goes here
-                            DiceButtonView(diceValue: die.value)
-                                
-                        }
+                            HStack {
+                                Image(systemName: "6.square").imageScale(.large)
+                                Spacer()
+                                Text("Add d6")
+                            }
+                        }.buttonStyle(DiceButtonStyle())
                         
+                        Button(action: {
+                            self.addDie(value: 8)
+                        }) {
+                            HStack {
+                                Image(systemName: "8.square").imageScale(.large)
+                                Spacer()
+                                Text("Add d8")
+                            }
+                        }.buttonStyle(DiceButtonStyle())
+                    }
+                    
+                    HStack(spacing:10) {
+                        Button(action: {
+                            self.addDie(value: 10)
+                        }) {
+                            HStack {
+                                Image(systemName: "10.square").imageScale(.large)
+                                Spacer()
+                                Text("Add d10")
+                            }
+                        }.buttonStyle(DiceButtonStyle())
+                        
+                        Button(action: {
+                            self.addDie(value: 12)
+                        }) {
+                            HStack {
+                                Image(systemName: "12.square").imageScale(.large)
+                                Spacer()
+                                Text("Add d12")
+                            }
+                        }.buttonStyle(DiceButtonStyle())
+                        
+                        Button(action: {
+                            self.addDie(value: 20)
+                        }) {
+                            HStack {
+                                Image(systemName: "20.square").imageScale(.large)
+                                Spacer()
+                                Text("Add d20")
+                            }
+                        }.buttonStyle(DiceButtonStyle())
+                    }
+                    
+                    //                        Spacer()
+                    Text("Custom Value (TBA)").font(.system(.body, design: .serif)).fontWeight(.semibold).foregroundColor(.offWhiteDarker)
+                    
+                    HStack(spacing:10) {
+                        Button(action: {
+                            self.addDie(value: 100)
+                        }) {
+                            HStack {
+                                Image(systemName: "x.square").imageScale(.large)
+                                Spacer()
+                                Text("Add dX")
+                            }
+                        }.buttonStyle(DiceButtonLongStyle())
+                        
+                        Button(action: {
+                            self.addDie(value: 100)
+                        }) {
+                            HStack {
+                                Image(systemName: "number.square").imageScale(.large)
+                                Spacer()
+                                Text("Add n")
+                            }
+                        }.buttonStyle(DiceButtonLongStyle())
                     }
                     
                     
-                           
-                }.frame(minHeight: 80)
-            }.frame(minHeight: 80)
-                .background(Color.yellow)
-            
-//            Text("Roll?")
-            Button(action: {
-                self.roll()
-            }) {
-                Text("ROLL!")
-            }
-        
-            //TODO: 0 isn't best in case of negative numbers later
-            Text("\(rollResult != 0 ? String(rollResult) : "--")")
-                .font(.system(size: 60, design: .rounded))
-            Text("\(indivResults)")
+                    
+                } // vstack
+               
+                
+                VStack(alignment: .center) {
+                    GeometryReader { geometry in
+                        ScrollView(.horizontal, showsIndicators: true) {
+                            VStack {
+                                HStack(alignment: .center, spacing: 5) {
+                                    ForEach(self.diceList.selectedDice, id: \.id) {die in
+                                        Button(action: {
+                                            self.deleteDie(die: die)
+                                            //
+                                        }) {
+                                            // design goes here
+                                            DiceButtonView(diceValue: die.value)
+                                            
+                                        }
+                                        
+                                    }
+                                }.frame(height: 60).frame(width: geometry.size.width)
+                                Text("\(self.rollStatement.isEmpty ? " " : self.rollStatement)")
+                            }
+                        }
+                    }.frame(height: 60)
+                    
+                } //Vstack
+                
+                
+                
+                 Spacer()
+                VStack {
+                   
+                    
+                    
+                    //TODO: 0 isn't best in case of negative numbers later
+                    Text("\(rollResult != 0 ? String(rollResult) : "--")")
+                        .font(.system(size: 144, weight:.heavy, design: .rounded))
+                    Text("\(indivResults)").font(.system(size: 24, weight:.light, design: .monospaced))
+                   
+                }
+              
+                 Spacer()
+                
+                HStack(spacing: 15) {
+                    Button(action: {
+                        self.roll()
+                    }) {
+                        HStack{
+                            Image(systemName: "cube").imageScale(.large)
+                            //                                Spacer()
+                            Text("Roll Dice").fontWeight(.semibold)
+                        }.font(.body).frame(width:210, height: 15)
+                            .padding(10)
+                            .foregroundColor(diceList.selectedDice.isEmpty ? .gray : .black)
+                            .background(Color.offWhite)
+                            .cornerRadius(7.5)
+                    }.disabled(diceList.selectedDice.isEmpty)
+                    
+                    Button(action: {
+                        self.showingSheet.toggle()
+                    }) {
+                        HStack{
+                            Image(systemName: "info.circle").imageScale(.large)
+                            //                                Spacer()
+                            Text("Stats").fontWeight(.semibold)
+                        }.font(.body).frame(width:90, height: 15)
+                            .padding(10)
+                            .foregroundColor(.black)
+                            .background(Color.offWhite)
+                            .cornerRadius(7.5)
+                    }.sheet(isPresented: $showingSheet) {
+                        StatsSheetView(diceMap: self.diceMap)
+                    }
+                    
+                    
+                    
+                }.frame(maxWidth: .infinity, maxHeight: 60).background(Color.offWhiteDarker).edgesIgnoringSafeArea(.all)
+                
+            }.edgesIgnoringSafeArea(.bottom)
         }
+        
+        
         
     }
     
@@ -164,4 +295,38 @@ class SelectedDice: ObservableObject {
     func delete(_ item: Dice) {
         self.selectedDice.removeAll(where: {$0.id == item.id})
     }
+}
+
+struct DiceButtonStyle: ButtonStyle {
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .font(.system(.subheadline, design: .serif))
+            .frame(width: 90, height: 20)
+            .foregroundColor(.black)
+            .padding(7.5)
+            .background(Color.offWhite)
+            .cornerRadius(7.5)
+            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 5, y: 5)
+            .shadow(color: Color.white.opacity(0.7), radius: 5, x: -0, y: -0)
+    }
+}
+
+struct DiceButtonLongStyle: ButtonStyle {
+    func makeBody(configuration: Self.Configuration) -> some View {
+        configuration.label
+            .font(.system(.subheadline, design: .serif))
+            .frame(width: 150, height: 20)
+            .foregroundColor(.black)
+            .padding(7.5)
+            .background(Color.offWhite)
+            .cornerRadius(7.5)
+            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 5, y: 5)
+            .shadow(color: Color.white.opacity(0.7), radius: 5, x: -0, y: -0)
+    }
+}
+
+extension Color {
+    static let offWhite = Color(red: 225/255, green: 225/255, blue: 235/255)
+    static let offWhiteLighter = Color(red: 235/255, green: 235/255, blue: 245/255)
+    static let offWhiteDarker = Color(red: 75/255, green: 75/255, blue: 85/255)
 }
