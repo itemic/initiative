@@ -14,6 +14,7 @@ struct ContentView: View {
     @State private var diceMap: [Int:Int] = [:]
     @State private var rollResult: Int = 0
     @State private var indivResults: String = ""
+    @State private var indivResultsAsArray: [String] = []
     @State private var stepperValue = "1"
     @State private var showingSheet = false
     @State private var disableRoll = true
@@ -23,6 +24,8 @@ struct ContentView: View {
     //    let defaultDice = [4, 6, 8]
     
     @ObservedObject var diceList = SelectedDice()
+    
+
     
     
     
@@ -54,99 +57,105 @@ struct ContentView: View {
             Color.offWhite.edgesIgnoringSafeArea(.all)
             
             
-            VStack(spacing: 40) {
+            VStack(spacing: 30) {
+                
                 Text("Dice Roll").font(.system(.largeTitle, design: .serif)).fontWeight(.heavy)
                 
-                VStack(spacing: 10) {
-                    Text("Preset Dice").font(.system(.body, design: .serif)).fontWeight(.semibold).foregroundColor(.offWhiteDarker)
-                    HStack(spacing:10) {
-                        Button(action: {
-                            self.addDie(value: 4)
-                        }) {
-                            HStack {
-                                Image(systemName: "4.square").imageScale(.large)
-                                Spacer()
-                                Text("Add d4")
-                            }
-                        }.buttonStyle(DiceButtonStyle())
+                VStack(spacing: 20) {
+                    Group {
+                        Text("Preset Dice").font(.system(.body, design: .serif)).fontWeight(.semibold).foregroundColor(.offWhiteDarker)
+                        HStack(spacing:10) {
+                            Button(action: {
+                                self.addDie(value: 4)
+                            }) {
+                                HStack {
+                                    Image(systemName: "4.square").imageScale(.large)
+                                    Spacer()
+                                    Text("Add d4")
+                                }
+                            }.buttonStyle(DiceButtonStyle())
+                            
+                            Button(action: {
+                                self.addDie(value: 6)
+                            }) {
+                                HStack {
+                                    Image(systemName: "6.square").imageScale(.large)
+                                    Spacer()
+                                    Text("Add d6")
+                                }
+                            }.buttonStyle(DiceButtonStyle())
+                            
+                            Button(action: {
+                                self.addDie(value: 8)
+                            }) {
+                                HStack {
+                                    Image(systemName: "8.square").imageScale(.large)
+                                    Spacer()
+                                    Text("Add d8")
+                                }
+                            }.buttonStyle(DiceButtonStyle())
+                        }
                         
-                        Button(action: {
-                            self.addDie(value: 6)
-                        }) {
-                            HStack {
-                                Image(systemName: "6.square").imageScale(.large)
-                                Spacer()
-                                Text("Add d6")
-                            }
-                        }.buttonStyle(DiceButtonStyle())
-                        
-                        Button(action: {
-                            self.addDie(value: 8)
-                        }) {
-                            HStack {
-                                Image(systemName: "8.square").imageScale(.large)
-                                Spacer()
-                                Text("Add d8")
-                            }
-                        }.buttonStyle(DiceButtonStyle())
+                        HStack(spacing:10) {
+                            Button(action: {
+                                self.addDie(value: 10)
+                            }) {
+                                HStack {
+                                    Image(systemName: "10.square").imageScale(.large)
+                                    Spacer()
+                                    Text("Add d10")
+                                }
+                            }.buttonStyle(DiceButtonStyle())
+                            
+                            Button(action: {
+                                self.addDie(value: 12)
+                            }) {
+                                HStack {
+                                    Image(systemName: "12.square").imageScale(.large)
+                                    Spacer()
+                                    Text("Add d12")
+                                }
+                            }.buttonStyle(DiceButtonStyle())
+                            
+                            Button(action: {
+                                self.addDie(value: 20)
+                            }) {
+                                HStack {
+                                    Image(systemName: "20.square").imageScale(.large)
+                                    Spacer()
+                                    Text("Add d20")
+                                }
+                            }.buttonStyle(DiceButtonStyle())
+                        }
                     }
                     
-                    HStack(spacing:10) {
-                        Button(action: {
-                            self.addDie(value: 10)
-                        }) {
-                            HStack {
-                                Image(systemName: "10.square").imageScale(.large)
-                                Spacer()
-                                Text("Add d10")
-                            }
-                        }.buttonStyle(DiceButtonStyle())
+                    Group {
+                        Text("Custom Value (TBA)").font(.system(.body, design: .serif)).fontWeight(.semibold).foregroundColor(.offWhiteDarker)
                         
-                        Button(action: {
-                            self.addDie(value: 12)
-                        }) {
-                            HStack {
-                                Image(systemName: "12.square").imageScale(.large)
-                                Spacer()
-                                Text("Add d12")
-                            }
-                        }.buttonStyle(DiceButtonStyle())
+                        HStack(spacing:10) {
+                            Button(action: {
+                                self.addDie(value: 100)
+                            }) {
+                                HStack {
+                                    Image(systemName: "x.square").imageScale(.large)
+                                    Spacer()
+                                    Text("Add dX")
+                                }
+                            }.buttonStyle(DiceButtonLongStyle())
+                            
+                            Button(action: {
+                                self.addDie(value: 100)
+                            }) {
+                                HStack {
+                                    Image(systemName: "number.square").imageScale(.large)
+                                    Spacer()
+                                    Text("Add n")
+                                }
+                            }.buttonStyle(DiceButtonLongStyle())
+                        }
                         
-                        Button(action: {
-                            self.addDie(value: 20)
-                        }) {
-                            HStack {
-                                Image(systemName: "20.square").imageScale(.large)
-                                Spacer()
-                                Text("Add d20")
-                            }
-                        }.buttonStyle(DiceButtonStyle())
                     }
-                    
                     //                        Spacer()
-                    Text("Custom Value (TBA)").font(.system(.body, design: .serif)).fontWeight(.semibold).foregroundColor(.offWhiteDarker)
-                    
-                    HStack(spacing:10) {
-                        Button(action: {
-                            self.addDie(value: 100)
-                        }) {
-                            HStack {
-                                Image(systemName: "x.square").imageScale(.large)
-                                Spacer()
-                                Text("Add dX")
-                            }
-                        }.buttonStyle(DiceButtonLongStyle())
-                        
-                        Button(action: {
-                            self.addDie(value: 100)
-                        }) {
-                            HStack {
-                                Image(systemName: "number.square").imageScale(.large)
-                                Spacer()
-                                Text("Add n")
-                            }
-                        }.buttonStyle(DiceButtonLongStyle())
-                    }
                     
                     
                     
@@ -164,7 +173,7 @@ struct ContentView: View {
                                             //
                                         }) {
                                             // design goes here
-                                            DiceButtonView(diceValue: die.value)
+                                            DiceButtonView(diceValue: die.value, color: self.getColor(die.value))
                                             
                                         }
                                         
@@ -185,9 +194,12 @@ struct ContentView: View {
                     
                     
                     //TODO: 0 isn't best in case of negative numbers later
-                    Text("\(rollResult != 0 ? String(rollResult) : "--")")
+                    Text("\(rollResult != 0 ? String(rollResult) : "!")")
                         .font(.system(size: 144, weight:.heavy, design: .rounded))
                     Text("\(indivResults)").font(.system(size: 24, weight:.light, design: .monospaced))
+                    
+                    
+                   
                    
                 }
               
@@ -236,6 +248,26 @@ struct ContentView: View {
     }
     
     
+    func getColor(_ diceValue: Int) -> Color {
+        
+        if diceValue == 4 {
+            return .blue
+        } else if diceValue == 6 {
+            return .yellow
+        } else if diceValue == 8 {
+            return .orange
+        } else if diceValue == 10 {
+            return .green
+        } else if diceValue == 12 {
+            return .red
+        } else if diceValue == 20 {
+            return .purple
+        } else {
+            return .clear
+        }
+        
+    }
+    
     func addDie(value: Int) {
         // add to total dice map
         // add to current dice
@@ -271,6 +303,7 @@ struct ContentView: View {
         
         rollResult = result
         indivResults = individualResults.joined(separator: ", ")
+        indivResultsAsArray = individualResults
         
         
     }
